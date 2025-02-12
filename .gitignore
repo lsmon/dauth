@@ -60,3 +60,4 @@
 /include/cache
 /include/Scheduler.hpp
 /include/Task.hpp
+/.vscode
