@@ -61,7 +61,8 @@ int main() {
     std::string decryptedText = StringEncoder::bytesToString(decryptedData, decryptedSize);
 
     std::cout << "Original text: " << originalText << std::endl;
-    std::cout << "Encrypted text: " << StringEncoder::bytesToString(encryptedData, encryptedSize) << std::endl;
+    std::cout << "Encrypted text (hex): " << StringEncoder::bytesToHex(encryptedData, encryptedSize) << std::endl;
+    std::cout << "Encrypted text (base64): " << StringEncoder::base64Encode(encryptedData, encryptedSize) << std::endl;
     std::cout << "Decrypted text: " << decryptedText << std::endl;
 
     assert(originalText == decryptedText);
@@ -77,9 +78,21 @@ int main() {
     byte* sha1Hash = Hash::sha1(data.data());
     byte* sha256Hash = Hash::sha256(data.data());
 
-    std::cout << "MD5 hash: " << StringEncoder::bytesToString(md5Hash, EVP_MAX_MD_SIZE) << std::endl;
-    std::cout << "SHA1 hash: " << StringEncoder::bytesToString(sha1Hash, SHA_DIGEST_LENGTH) << std::endl;
-    std::cout << "SHA256 hash: " << StringEncoder::bytesToString(sha256Hash, SHA256_DIGEST_LENGTH) << std::endl;
+    std::string md5Hex = StringEncoder::bytesToHex(md5Hash, EVP_MAX_MD_SIZE);
+    std::string sha1Hex = StringEncoder::bytesToHex(sha1Hash, SHA_DIGEST_LENGTH);
+    std::string sha256Hex = StringEncoder::bytesToHex(sha256Hash, SHA256_DIGEST_LENGTH);
+
+    unsigned long long md5Int = StringEncoder::hexToInteger(md5Hex);
+    unsigned long long sha1Int = StringEncoder::hexToInteger(sha1Hex);
+    unsigned long long sha256Int = StringEncoder::hexToInteger(sha256Hex);
+
+    std::cout << "MD5 hash (Hex): " << md5Hex << std::endl;
+    std::cout << "SHA1 hash (Hex): " << sha1Hex << std::endl;
+    std::cout << "SHA256 hash (Hex): " << sha256Hex << std::endl;
+
+    std::cout << "MD5 hash (Integer): " << md5Int << std::endl;
+    std::cout << "SHA1 hash (Integer): " << sha1Int << std::endl;
+    std::cout << "SHA256 hash (Integer): " << sha256Int << std::endl;
 
     return EXIT_SUCCESS;
 }

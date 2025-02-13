@@ -60,7 +60,7 @@ else()
     message(FATAL_ERROR "OpenSSL not found")
 endif()
 
-add_test(TEST_ENCRYPT COMMAND ${PROJECT_NAME}_test)
+add_test(TEST_ENCRYPT ${PROJECT_NAME}_test)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})

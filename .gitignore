@@ -60,4 +60,7 @@
 /include/cache
 /include/Scheduler.hpp
 /include/Task.hpp
-.vscode/ 
+/.vscode/setting.json
+/.vscode/c_pp_properties.json
+/.vscode/launch.json
+/.vscode
