@@ -29,7 +29,7 @@ set(DAUTH_SRC
         sources/auth/crypto/AuthCrypto.cpp
         sources/auth/crypto/Hash.cpp)
 
-# add_library(_${PROJECT_NAME} config.h ${JSON_INC} ${NETPP_INC} ${DAUTH_INC} ${DAUTH_SRC} ${LOG_INC})
+add_library(_${PROJECT_NAME} ${CONFIG} ${LOG_INC} ${JSON_INC} ${NETPP_INC} ${DAUTH_INC} ${DAUTH_SRC})
 
 find_package(OpenSSL REQUIRED)
 
@@ -43,20 +43,6 @@ if(OPENSSL_FOUND)
     message(STATUS "OPENSSL_LIBRARIES:      ${OPENSSL_LIBRARIES}")
 
     include_directories(${OPENSSL_INCLUDE_DIR})
-
-    # target_link_libraries(_${PROJECT_NAME} PRIVATE
-    #     OpenSSL::SSL 
-    #     OpenSSL::Crypto
-    #     ${OPENMSSL_LIBRARIES}
-    #     ${LOGPP_LIBRARY}
-    #     ${NETPP_LIBRARY}
-    #     ${JSON_LIBRARY}
-    # )
-    # target_include_directories(_${PROJECT_NAME} PUBLIC ${OPENSSL_INCLUDE_DIR}
-    #     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-    #     $<INSTALL_INTERFACE:include>)
-
-    # add_executable(${PROJECT_NAME}_test test/dauth.cpp include/config.h ${LOG_INC} ${JSON_INC} ${NETPP_INC} include/auth/crypto/AuthCrypto.hpp sources/auth/crypto/AuthCrypto.cpp)
 
     target_link_libraries(${PROJECT_NAME}_test PRIVATE
         OpenSSL::SSL 
@@ -73,6 +59,8 @@ if(OPENSSL_FOUND)
 else()
     message(FATAL_ERROR "OpenSSL not found")
 endif()
+
+add_test(TEST_ENCRYPT COMMAND ${PROJECT_NAME}_test)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
