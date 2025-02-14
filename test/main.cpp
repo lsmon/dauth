@@ -8,13 +8,7 @@
 #include "util/logging/Log.hpp"
 #include "config.h"
 
-static std::string originalText = R"(The quick brown fox jumps over the lazy dog, showcasing a classic pangram used for typing practice and font display.
-The quick brown fox jumps over the lazy dog, showcasing a classic pangram used for typing practice and font display.
-The quick brown fox jumps over the lazy dog, showcasing a classic pangram used for typing practice and font display.
-The quick brown fox jumps over the lazy dog, showcasing a classic pangram used for typing practice and font display.
-12345678890
-12345678890
-12345678)";
+static std::string originalText = R"(The quick brown fox jumps over the lazy dog, showcasing a classic pangram used for typing practice and font display. The quick brown fox jumps over the lazy dog, showcasing a classic pangram used for typing practice and font display. The quick brown fox jumps over the lazy dog, showcasing a classic pangram used for typing practice and font display. The quick brown fox jumps over the lazy dog, showcasing a classic pangram used for typing practice and font display. 12345678890123456788901234567890)";
 
 void testEncryptionDecryption() {
     std::unique_ptr<AuthCrypto> authCrypto = std::make_unique<AuthCrypto>();
@@ -67,11 +61,11 @@ void testHashing() {
     std::cout << "SHA1 hash (Integer): " << sha1Int << std::endl;
     std::cout << "SHA256 hash (Integer): " << sha256Int << std::endl;
 
-    assert("0443281202a5e0d36e93555b9f7ecacc000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000" 
+    assert("fd684e0acf69f9b0ba6ef594973b2c97000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000" 
         == md5Hex && "Md5 Hash value matches");
-    assert("1fa12ea69db5bf081751a175d64dd6e358baa8f3" 
+    assert("44c8b2d558fb360aa9a8b41ec4ed33677e4f002b" 
         == sha1Hex && "SHA1 Hash value matches");
-    assert("2f8869fca97f9b637c201208aeb581e9452875e713112d438084233b9089c304" 
+    assert("276b5acc956324376962a341cb0b341d4ae1b093f2f4b823b093587da31845a5" 
         == sha256Hex && "SHA256 Hash value matches");
 
     std::string hashValueStr = "18446744073709551615";

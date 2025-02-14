@@ -1,4 +1,5 @@
 #include "auth/crypto/AuthCrypto.hpp"
+#include "util/Exception.hpp"
 #include "util/String.hpp"
 #include "util/Util.hpp"
 #include "util/LogUtil.hpp"
@@ -92,9 +93,10 @@ bool AuthCrypto::generateKeyPair(const char* password) {
     bool result = generatePublicKey(pkey) && generatePrivateKey(pkey, password);
     if (pkey != nullptr) {
         EVP_PKEY_free(pkey);
+    } else {
+        throw NullptrException();
     }
     return result;
-
 }
 
 void AuthCrypto::init()

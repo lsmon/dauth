@@ -19,10 +19,6 @@ private:
 
     void init();
 
-    bool loadPrivateKey(const char *password);
-
-    bool loadPublicKey();
-
     void destroy();
 
 public:
@@ -37,6 +33,10 @@ public:
 
     std::string getPrivateKeyFilename();
 
+    bool loadPrivateKey(const char *password);
+
+    bool loadPublicKey();
+    
     bool doesPrivateKeyExists();
 
     bool doesPublicKeyExists();
