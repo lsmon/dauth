@@ -1,5 +1,5 @@
 #include "auth/crypto/AuthCrypto.hpp"
-#include "util/Exception.hpp"
+#include "Exception.hpp"
 #include "util/String.hpp"
 #include "util/Util.hpp"
 #include "util/LogUtil.hpp"
@@ -94,7 +94,7 @@ bool AuthCrypto::generateKeyPair(const char* password) {
     if (pkey != nullptr) {
         EVP_PKEY_free(pkey);
     } else {
-        throw NullptrException();
+        throw std::runtime_error("nullptr exception");
     }
     return result;
 }
@@ -106,10 +106,14 @@ void AuthCrypto::init()
         std::filesystem::create_directories(PUB_KEY_ARCHIVE);
     if (!std::filesystem::exists(PRV_KEY_ARCHIVE))
         std::filesystem::create_directories(PRV_KEY_ARCHIVE);
-    this->public_key_file = LogUtil::buildFileFullPath(PUB_KEY_ARCHIVE, this->filename);
+    this->public_key_file = PUB_KEY_ARCHIVE;
+    this->public_key_file.append("/");
+    this->public_key_file.append(this->filename);
     this->public_key_file.append(".pub");
 
-    this->private_key_file = LogUtil::buildFileFullPath(PRV_KEY_ARCHIVE, this->filename);
+    this->private_key_file = PRV_KEY_ARCHIVE;
+    this->private_key_file.append("/");
+    this->private_key_file.append(this->filename);
     this->private_key_file.append(".pem");
 }
 

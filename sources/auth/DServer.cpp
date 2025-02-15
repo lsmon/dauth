@@ -12,7 +12,7 @@ void ApiAuthDServer::init()
 {
     server->setHttpHandler(HttpMethod::GET, "/keys", Endpoint::generateRsaKeys);
     server->setHttpHandler(HttpMethod::POST, "/chk", Endpoint::handleAuthentication);
-    server->setHttpHandler(HttpMethod::GET, "/download/{tok}", Endpoint::retrieveRsaKeys);
+    server->setHttpHandler(HttpMethod::GET, "/dl/{tok}/{ktype}", Endpoint::retrieveRsaKeys);
 
     auto serverFuture = std::async(std::launch::async, [this]() mutable { server->run();} );
 
