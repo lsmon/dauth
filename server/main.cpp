@@ -1,4 +1,5 @@
 #include <csignal>
+#include "config.h"
 #include "auth/DServer.hpp"
 
 std::shared_ptr<ApiAuthDServer> api;
@@ -45,6 +46,7 @@ int main(int argc, char** argv) {
     for (int i = 1; i < NSIG; ++i) {
         std::signal(i, signalHandler);
     }
+
     api = std::make_unique<ApiAuthDServer>();
     api->init();
     return EXIT_SUCCESS;

@@ -24,12 +24,16 @@ include_directories(include)
 set(DAUTH_INC 
     include/auth/crypto/StringEncoder.hpp
     include/auth/crypto/AuthCrypto.hpp
-    include/auth/crypto/Hash.hpp)
+    include/auth/crypto/AuthIdentity.hpp
+    include/auth/crypto/Hash.hpp
+    include/util/fio/DirectoryHelper.hpp)
 
 set(DAUTH_SRC 
     sources/auth/crypto/StringEncoder.cpp
     sources/auth/crypto/AuthCrypto.cpp
-    sources/auth/crypto/Hash.cpp)
+    sources/auth/crypto/AuthIdentity.cpp
+    sources/auth/crypto/Hash.cpp
+    sources/util/fio/DirectoryHelper.cpp)
 
 set(DSERVER_INC
     include/auth/DServer.hpp
@@ -39,7 +43,13 @@ set(DSERVER_SRC
     sources/auth/DServer.cpp
     sources/auth/EndpointHandlers.cpp)
 
-add_library(_${PROJECT_NAME}-${PROJECT_VERSION} ${CONFIG} ${LOG_INC} ${JSON_INC} ${NETPP_INC} ${DAUTH_INC} ${DAUTH_SRC} ${DSERVER_INC} ${DSERVER_SRC})
+set(DCLIENT_INC
+    include/auth/DClient.hpp)
+
+set(DCLIENT_SRC
+    sources/auth/DClient.cpp)
+
+add_library(_${PROJECT_NAME}-${PROJECT_VERSION} ${CONFIG} ${LOG_INC} ${JSON_INC} ${NETPP_INC} ${DAUTH_INC} ${DAUTH_SRC})
 
 find_package(OpenSSL REQUIRED)
 
@@ -48,7 +58,11 @@ enable_testing()
 
 add_executable(${PROJECT_NAME}_test test/main.cpp ${CONFIG} ${LOG_INC} ${JSON_INC} ${NETPP_INC} ${DAUTH_INC} ${DAUTH_SRC})
 
-add_executable(${PROJECT_NAME} main.cpp ${CONFIG} ${LOG_INC} ${JSON_INC} ${NETPP_INC} ${DAUTH_INC} ${DSERVER_INC})
+add_executable(${PROJECT_NAME}_server server/main.cpp ${CONFIG} ${LOG_INC} ${JSON_INC} ${NETPP_INC} ${DAUTH_INC} ${DSERVER_INC} ${DSERVER_SRC})
+
+add_executable(${PROJECT_NAME}_client client/cpp/main.cpp ${CONFIG} ${LOG_INC} ${JSON_INC} ${NETPP_INC} ${DAUTH_INC} ${DCLIENT_INC} ${DCLIENT_SRC})
+
+target_link_libraries(${PROJECT_NAME}_server PRIVATE _${PROJECT_NAME}-${PROJECT_VERSION})
 
 if(OPENSSL_FOUND)
     message(STATUS "OPENSSL_INCLUDE_DIR:    ${OPENSSL_INCLUDE_DIR}")
@@ -80,7 +94,7 @@ if(OPENSSL_FOUND)
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
         $<INSTALL_INTERFACE:include>)
 
-    target_link_libraries(${PROJECT_NAME} PRIVATE
+    target_link_libraries(${PROJECT_NAME}_server PRIVATE
         OpenSSL::SSL 
         OpenSSL::Crypto 
         ${OPENMSSL_LIBRARIES}
@@ -89,10 +103,22 @@ if(OPENSSL_FOUND)
         ${JSON_LIBRARY}
         _${PROJECT_NAME}-${PROJECT_VERSION}
     )
-    target_include_directories(${PROJECT_NAME} PUBLIC ${OPENSSL_INCLUDE_DIR}
+    target_include_directories(${PROJECT_NAME}_server PUBLIC ${OPENSSL_INCLUDE_DIR}
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
         $<INSTALL_INTERFACE:include>)
 
+    target_link_libraries(${PROJECT_NAME}_client PRIVATE
+        OpenSSL::SSL 
+        OpenSSL::Crypto 
+        ${OPENMSSL_LIBRARIES}
+        ${LOGPP_LIBRARY}
+        ${NETPP_LIBRARY}
+        ${JSON_LIBRARY}
+        _${PROJECT_NAME}-${PROJECT_VERSION}
+    )
+    target_include_directories(${PROJECT_NAME}_client PUBLIC ${OPENSSL_INCLUDE_DIR}
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        $<INSTALL_INTERFACE:include>)
 else()
     message(FATAL_ERROR "OpenSSL not found")
 endif()
