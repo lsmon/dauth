@@ -16,6 +16,7 @@
 #define KB 1024
 #define MB KB*KB
 #define GB KB*KB*KB
+
 #define PRV_KEY_ARCHIVE "./key/prv"
 #define PUB_KEY_ARCHIVE "./key/pub"
 #define BLOCKCHAIN_ARCHIVE "./blockchain"
@@ -34,4 +35,5 @@ typedef unsigned char byte;
 //#define DEBUG
 
 //#define DISCOVERY_MODE
-#endif
+
+#endif // __CONFIG_H__
