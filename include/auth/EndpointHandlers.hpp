@@ -10,6 +10,8 @@ public:
     static void handleAuthentication(const HttpRequest& request, HttpResponse& response, Path* path);
 
     static void retrieveRsaKeys(const HttpRequest& request, HttpResponse& response, Path* path);
+
+    static void retrieveDauthPub(const HttpRequest& request, HttpResponse& response, Path* path);
 };
 
 #endif //__ENDPOINT_HANDLERS_HPP__

@@ -1,6 +1,8 @@
 #include "auth/crypto/AuthCrypto.hpp"
 #include "auth/EndpointHandlers.hpp"
+#include "auth/crypto/AuthIdentity.hpp"
 #include "util/logging/Log.hpp"
+#include "util/LogUtil.hpp"
 #include "util/UUID.hpp"
 #include "http/Status.hpp"
 #include <fstream>
@@ -84,6 +86,35 @@ void Endpoint::retrieveRsaKeys(const HttpRequest& request, HttpResponse& respons
             response.setStatus(CONFLICT);
             response.setBody(Status(CONFLICT).ss.str());
         }
+    }
+    else 
+    {
+        response.setStatus(GONE);
+        response.setBody(Status(GONE).ss.str());
+    }
+}
+
+void Endpoint::retrieveDauthPub(const HttpRequest &request, HttpResponse &response, Path *path)
+{
+
+    AuthIdentity *authId = AuthIdentity::getInstance();
+    std::string publicfn = authId->getServerIdAuthCrypto()->getPublicKeyFilename();
+    if ( !publicfn.empty() )
+    {
+        std::ifstream file(publicfn, std::ios::binary);
+        if (file)
+        {
+            std::string filecontent((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+            response.addHeader("content-type", "application/octet-stream");
+            response.addHeader("content-length", std::to_string(filecontent.size()));
+            response.setBody(filecontent);
+            response.setStatus(200);
+        }
+        else
+        {
+            response.setStatus(NOT_FOUND);
+            response.setBody(Status(NOT_FOUND).ss.str());
+        }    
     }
     else 
     {
