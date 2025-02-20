@@ -326,14 +326,13 @@ std::string AuthCrypto::getPrivateKeyFilename() {
     return private_key_file;
 }
 
-AuthCrypto *AuthCrypto::loadPublicKey(std::string filename) {
-    std::vector<std::string> tokens = String::tokenize(filename, std::regex(R"(\/)"));
-    std::string keyId;
-    for (const auto &item: tokens) {
-        if (item.size()-4 == 36)
-            keyId = item;
-    }
-    if (keyId.empty()) return nullptr;
-    keyId.erase(keyId.size()-4);
-    return new AuthCrypto(keyId.c_str());
+void AuthCrypto::loadPublicKey(std::string filename) {
+    this->public_key_file = filename;
+    this->loadPublicKey();
+}
+
+void AuthCrypto::loadPrivateKey(std::string filename, const char* passphrase) {
+    this->private_key_file = filename;
+    this->loadPrivateKey(passphrase);
+
 }

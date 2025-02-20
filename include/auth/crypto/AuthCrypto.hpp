@@ -1,5 +1,5 @@
-#ifndef AUTH_CRYPTO_HPP
-#define AUTH_CRYPTO_HPP
+#ifndef __AUTH_CRYPTO_HPP__
+#define __AUTH_CRYPTO_HPP__
 
 #include <openssl/bn.h>
 #include <openssl/evp.h>
@@ -59,7 +59,9 @@ public:
 
     size_t hashing(unsigned char *msg, unsigned char *&md);
 
-    static AuthCrypto *loadPublicKey(std::string filename);
+    void loadPublicKey(std::string filename);
+
+    void loadPrivateKey(std::string filename, const char *password="");
 };
 
-#endif // AUTH_CRYPTO_HPP
+#endif // __AUTH_CRYPTO_HPP__
