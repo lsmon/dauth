@@ -7,6 +7,7 @@
 class ApiAuthDServer {
 private:
     std::unique_ptr<HttpServer> server;
+    std::string serverId;
 
 public:
     explicit ApiAuthDServer();
