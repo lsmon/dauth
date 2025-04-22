@@ -35,7 +35,7 @@
 /netpp
 /logpp
 /json
-/caching
+/cache
 /scheduler
 /include/api
 /include/http
