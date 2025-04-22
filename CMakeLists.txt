@@ -2,9 +2,10 @@ cmake_minimum_required(VERSION 3.16)
 cmake_policy(SET CMP0115 NEW)
 project(dauth VERSION 0.1.0 LANGUAGES C CXX)
 
-message(STATUS ${PROJECT_VERSION})
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+message(STATUS ${PROJECT_VERSION})
 
 include(external/CMakeLists.txt)
 set(PROPERTY ${CMAKE_BINARY_DIR}/resources/logging.properties)
@@ -55,7 +56,7 @@ find_package(OpenSSL REQUIRED)
 
 include(CTest)
 enable_testing()
-
+ 
 add_executable(${PROJECT_NAME}_test test/main.cpp ${CONFIG} ${LOG_INC} ${JSON_INC} ${NETPP_INC} ${DAUTH_INC} ${DAUTH_SRC})
 
 add_executable(${PROJECT_NAME}_server server/main.cpp ${CONFIG} ${LOG_INC} ${JSON_INC} ${NETPP_INC} ${DAUTH_INC} ${DSERVER_INC} ${DSERVER_SRC})

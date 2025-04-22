@@ -2,6 +2,7 @@
 #define __AUTH_IDENTITY_HPP__
 
 #include <string>
+#include <memory>
 #include "auth/crypto/AuthCrypto.hpp"
 
 class AuthIdentity

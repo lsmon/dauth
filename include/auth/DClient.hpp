@@ -2,7 +2,7 @@
 #define __DCLIENT_HPP__
 
 #include <memory>
-#include "http/Client.hpp"
+#include "api/Client.hpp"
 #include "auth/crypto/AuthCrypto.hpp"
 
 class DClient {
